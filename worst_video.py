@@ -1,16 +1,11 @@
 # %% IMPORTS
-import re
-import time
-from datetime import datetime
 import arrow
 from tqdm import tqdm
 
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException, TimeoutException, ElementClickInterceptedException                         
+from selenium.common.exceptions import NoSuchElementException                         
 
 # %% CONSTANTS
 PATH_COOKIES = "C:\\Users\\vince\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Network\\"
@@ -56,7 +51,7 @@ def clean_dumpert_datestring(datestring: str) -> str:
     return datestring.split('@')[0].replace('.', '').strip()
 
 # %% MAIN
-print(f"Opening a Browser")
+print("Opening a Browser")
 chrome_options = webdriver.ChromeOptions() 
 # Add regular cookies
 chrome_options.add_argument(f"user-data-dir={PATH_COOKIES}")
@@ -143,7 +138,7 @@ for k, v in videos_shit.items():
 
 # %%
 # Open shit list
-print(f"Opening a Browser")
+print("Opening a Browser")
 chrome_options = webdriver.ChromeOptions() 
 # Add regular cookies
 chrome_options.add_argument(f"user-data-dir={PATH_COOKIES}")
