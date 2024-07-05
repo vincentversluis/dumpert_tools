@@ -31,7 +31,7 @@ LAST_OF_MONTH = {'januari': 31,
                  'december': 31}
 
 # %% CONFIG
-month_of_interest = 'mei' # Full Dutch month name
+month_of_interest = 'juni' # Full Dutch month name
 year_of_interest = '2024' # YYYY
 bottom_n = 25
 
@@ -74,10 +74,12 @@ print(f"Scrolling down page to videos dated {prev_dmy_of_interest}")
 # Scroll down a good many times -- every month many videos are uploaded
 # !! It helps having the browser window maximised
 main_page = driver.find_element(By.TAG_NAME, 'html')
-for _ in range(500):
+for _ in range(600):
     main_page.send_keys(Keys.PAGE_DOWN)
 
 print("Scrolled a good way down, manually scroll further if necessary")
+# %%
+# Try clicking 'open meer items'
 
 # %% Get videos and details
 videos = {video_id: {'css': video}
@@ -119,12 +121,12 @@ driver.close()
 # Filter by date and acquire shit list
 start_period_of_interest = arrow.get(
     f"1 {month_of_interest} {year_of_interest}"
-    , "D MMM YYYY"
+    , "D MMMM YYYY"
     , locale='nl-NL'
     ).date()
 end_period_of_interest = arrow.get(
     f"{LAST_OF_MONTH[month_of_interest]} {month_of_interest} {year_of_interest}"
-    , "D MMM YYYY"
+    , "D MMMM YYYY"
     , locale='nl-NL'
     ).date()
 
@@ -148,7 +150,7 @@ chrome_options.add_argument(f"user-data-dir={PATH_COOKIES}")
 driver = webdriver.Chrome(options=chrome_options)
 
 for k, v in videos_shit.items():
-    driver.get(v['hyperlink'])
+    driver.get(v['url'])
     driver.execute_script("window.open('');") 
     # Switch to the new window and open new URL 
     driver.switch_to.window(driver.window_handles[-1]) 
