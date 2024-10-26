@@ -26,7 +26,7 @@ LAST_OF_MONTH = {'januari': 31,
                  'december': 31}
 
 # %% CONFIG
-month_of_interest = 'juni' # Full Dutch month name
+month_of_interest = 'augustus' # Full Dutch month name
 year_of_interest = '2024' # YYYY
 bottom_n = 25
 
@@ -66,6 +66,7 @@ prev_dmy_of_interest = get_prev_daymonthyear_of_interest(
     year_of_interest)
 
 print(f"Scrolling down page to videos dated {prev_dmy_of_interest}")
+print("Manual interruption at that date is fine.")
 # Scroll down a good many times -- every month many videos are uploaded
 # !! It helps having the browser window maximised
 main_page = driver.find_element(By.TAG_NAME, 'html')
