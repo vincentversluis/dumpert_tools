@@ -9,24 +9,28 @@ from selenium.common.exceptions import NoSuchElementException
 
 # %% CONSTANTS
 PATH_COOKIES = "C:\\Users\\vince\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Network\\"
-LINKS = {'dumpert':'https://www.dumpert.nl/',
-         'dumpert_toppers_maand': 'https://www.dumpert.nl/toppers/maand',}
+LINKS = {
+    'dumpert':'https://www.dumpert.nl/',
+    'dumpert_toppers_maand': 'https://www.dumpert.nl/toppers/maand',
+    }
 MONTHS_NL = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december']
-LAST_OF_MONTH = {'januari': 31,
-                 'februari': 28,
-                 'maart': 31,
-                 'april': 30,
-                 'mei': 31,
-                 'juni': 30,
-                 'juli': 31,
-                 'augustus': 31,
-                 'september': 30,
-                 'oktober': 31,
-                 'november': 30,
-                 'december': 31}
+LAST_OF_MONTH = {
+    'januari': 31,
+    'februari': 28,
+    'maart': 31,
+    'april': 30,
+    'mei': 31,
+    'juni': 30,
+    'juli': 31,
+    'augustus': 31,
+    'september': 30,
+    'oktober': 31,
+    'november': 30,
+    'december': 31
+    }
 
 # %% CONFIG
-month_of_interest = 'augustus' # Full Dutch month name
+month_of_interest = 'oktober' # Full Dutch month name
 year_of_interest = '2024' # YYYY
 bottom_n = 25
 
@@ -45,7 +49,7 @@ def clean_dumpert_datestring(datestring: str) -> str:
     """
     Clean dumpert datestring from something like:
         30 apr. '24 @ 22:04 | 40.634 views
-     to
+    to
         30 apr '24    
     """
     return datestring.split('@')[0].replace('.', '').strip()
@@ -59,7 +63,7 @@ driver = webdriver.Chrome(options=chrome_options)
 address = LINKS['dumpert']
 print(f"Going to {address}")
 driver.get(address)
- 
+
 # Scroll until month before month of interest is opened
 prev_dmy_of_interest = get_prev_daymonthyear_of_interest(
     month_of_interest, 
@@ -78,9 +82,11 @@ print("Scrolled a good way down, manually scroll further if necessary")
 # Try clicking 'open meer items'
 
 # %% Get videos and details
-videos = {video_id: {'css': video}
-          for video_id, video 
-          in enumerate(driver.find_elements(By.CLASS_NAME, "css-6jb95j"))}
+videos = {
+    video_id: {'css': video}
+    for video_id, video 
+    in enumerate(driver.find_elements(By.CLASS_NAME, "css-6jb95j"))
+    }
 
 # Get video details
 for video_id, video in tqdm(videos.items(), desc="Retrieving video details"):
@@ -105,10 +111,12 @@ for video_id, video in tqdm(videos.items(), desc="Retrieving video details"):
             score = int(video['css'].find_element(By.CLASS_NAME, "css-1q6mey1").text)
         except NoSuchElementException: # Negative score has a different class
             score = None
-    video.update({'date':       date,
-                  'title':      title, 
-                  'url':        url, 
-                  'score':      score})
+    video.update({
+        'date':       date,
+        'title':      title, 
+        'url':        url, 
+        'score':      score
+        })
     
 # Shut down browser
 driver.close()
