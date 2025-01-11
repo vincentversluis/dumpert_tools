@@ -7,6 +7,11 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException                         
 
+# %% CONFIG
+month_of_interest = 'december' # Full Dutch month name
+year_of_interest = '2024' # YYYY
+bottom_n = 25
+
 # %% CONSTANTS
 PATH_COOKIES = "C:\\Users\\vince\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Network\\"
 LINKS = {
@@ -29,11 +34,6 @@ LAST_OF_MONTH = {
     'december': 31
     }
 
-# %% CONFIG
-month_of_interest = 'oktober' # Full Dutch month name
-year_of_interest = '2024' # YYYY
-bottom_n = 25
-
 # %% FUNCTIONS
 def get_prev_daymonthyear_of_interest(
         month_of_interest: str,
@@ -42,7 +42,7 @@ def get_prev_daymonthyear_of_interest(
     """Return string version of previous month/year of interest"""
     month_of_interest = month_of_interest.lower()
     prev_month_of_interest = MONTHS_NL[MONTHS_NL.index(month_of_interest)-1]
-    prev_year_of_interest = year_of_interest if month_of_interest != MONTHS_NL[-1] else year_of_interest-1
+    prev_year_of_interest = year_of_interest if month_of_interest != MONTHS_NL[-1] else str(int(year_of_interest)-1)
     return f"{LAST_OF_MONTH[prev_month_of_interest]} {prev_month_of_interest} '{prev_year_of_interest[-2:]}"
 
 def clean_dumpert_datestring(datestring: str) -> str:
@@ -117,33 +117,39 @@ for video_id, video in tqdm(videos.items(), desc="Retrieving video details"):
         'url':        url, 
         'score':      score
         })
-    
-# Shut down browser
-driver.close()
 
 # %%
+# Adjust year of interest if month is last month of year
+adjusted_year_of_interest = year_of_interest if month_of_interest != MONTHS_NL[-1] else str(int(year_of_interest)-1)
+
 # Filter by date and acquire shit list
 start_period_of_interest = arrow.get(
-    f"1 {month_of_interest} {year_of_interest}"
+    f"1 {month_of_interest} {adjusted_year_of_interest}"
     , "D MMMM YYYY"
     , locale='nl-NL'
     ).date()
 end_period_of_interest = arrow.get(
-    f"{LAST_OF_MONTH[month_of_interest]} {month_of_interest} {year_of_interest}"
+    f"{LAST_OF_MONTH[month_of_interest]} {month_of_interest} {adjusted_year_of_interest}"
     , "D MMMM YYYY"
     , locale='nl-NL'
     ).date()
 
+# %%
 # Filter videos for date
 videos = {k: v for k, v in videos.items() if start_period_of_interest <= v['date'] <= end_period_of_interest}
 
+# %%
 # Sort videos by score
 videos = dict(sorted(videos.items(), key=lambda x:x[1]['score']))
 
+# %%
 # Get shit list and show outcome
 videos_shit = dict(list(videos.items())[:bottom_n])
 for k, v in videos_shit.items():
     print(f"{v['score']:<5} - {v['title']}")
+
+# %% Shut down browser when done collecting and sorting shit list
+driver.close()
 
 # %%
 # Open shit list
@@ -159,7 +165,10 @@ for k, v in videos_shit.items():
     # Switch to the new window and open new URL 
     driver.switch_to.window(driver.window_handles[-1]) 
     # driver.get(v['url'])
+    
 # %%
 driver.close()
 
+# %%
+videos_shit
 # %%
