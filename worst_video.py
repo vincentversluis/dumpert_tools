@@ -23,7 +23,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException                         
 
 # %% CONFIG
-month_of_interest = 'januari'  # Full Dutch month name
+month_of_interest = 'februari'  # Full Dutch month name
 year_of_interest = '2025'  # YYYY
 bottom_n = 25  # Number of videos to output
 
