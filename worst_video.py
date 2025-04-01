@@ -137,7 +137,7 @@ for video_id, video in tqdm(videos.items(), desc="Retrieving video details"):
     elif 'gister' in datestring:
         date = arrow.utcnow().to('CET').shift(days=-1).date()
     else:
-        date = arrow.get(datestring, "DD MMM 'YY", locale='nl-NL').date()
+        date = arrow.get(datestring, "D MMM 'YY", locale='nl-NL').date()
         
     # Get score
     try:
