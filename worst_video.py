@@ -23,7 +23,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException                         
 
 # %% CONFIG
-month_of_interest = 'februari'  # Full Dutch month name
+month_of_interest = 'maart'  # Full Dutch month name
 year_of_interest = '2025'  # YYYY
 bottom_n = 25  # Number of videos to output
 
@@ -82,7 +82,14 @@ def clean_dumpert_datestring(datestring: str) -> str:
     Returns:
         str: Formatted string of month/year as recognisable by arrow
     """
-    return datestring.split('@')[0].replace('.', '').strip()
+    clean_datestring = (
+        datestring
+        .split('@')[0]
+        .replace('.', '')
+        .replace('maa', 'mrt')
+        .strip()
+        )
+    return clean_datestring
 
 # %% MAIN
 # Open the browser and go to the dumpert.nl home page
@@ -130,7 +137,7 @@ for video_id, video in tqdm(videos.items(), desc="Retrieving video details"):
     elif 'gister' in datestring:
         date = arrow.utcnow().to('CET').shift(days=-1).date()
     else:
-        date = arrow.get(datestring, "D MMM 'YY", locale='nl-NL').date()
+        date = arrow.get(datestring, "DD MMM 'YY", locale='nl-NL').date()
         
     # Get score
     try:
@@ -199,3 +206,4 @@ for k, v in videos_shit.items():
 # Close the browser, though user probably wants to do this themselves after enjoying
 # the ragebait on the shit list
 # driver.close()
+
