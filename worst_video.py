@@ -23,7 +23,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException                         
 
 # %% CONFIG
-month_of_interest = 'maart'  # Full Dutch month name
+month_of_interest = 'juli'  # Full Dutch month name
 year_of_interest = '2025'  # YYYY
 bottom_n = 25  # Number of videos to output
 
@@ -180,7 +180,7 @@ videos = dict(sorted(videos.items(), key=lambda x:x[1]['score']))
 # Get shit list and show outcome
 videos_shit = dict(list(videos.items())[:bottom_n])
 for k, v in videos_shit.items():
-    print(f"{v['score']:<5} - {v['title']}")
+    print(f"{v['score']:<5} - {v['url']} - {v['title']}")
 
 # %% 
 # Shut down browser when done collecting and sorting shit list. This is a separate
