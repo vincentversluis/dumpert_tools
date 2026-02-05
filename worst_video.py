@@ -23,8 +23,8 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 
 # %% CONFIG
-month_of_interest = "december"  # Full Dutch month name
-year_of_interest = "2025"  # YYYY
+month_of_interest = "januari"  # Full Dutch month name
+year_of_interest = "2026"  # YYYY
 bottom_n = 25  # Number of videos to output
 
 # %% CONSTANTS
@@ -175,9 +175,10 @@ for video_id, video in tqdm(videos.items(), desc="Retrieving video details"):
 
 print(f"Found {len(videos)} videos")
 
+# %%
 # Calculate period of interest
 period_of_interest_start = arrow.get(
-    f"{year_of_interest}-{MONTHS_NL.index(month_of_interest) + 1}-01", "YYYY-MM-DD"
+    f"{year_of_interest}-{MONTHS_NL.index(month_of_interest) + 1:0>2}-01", "YYYY-MM-DD"
 )
 period_of_interest_end = period_of_interest_start.shift(months=1).shift(seconds=-1)
 
