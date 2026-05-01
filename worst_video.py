@@ -23,7 +23,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 
 # %% CONFIG
-month_of_interest = "januari"  # Full Dutch month name
+month_of_interest = "april"  # Full Dutch month name
 year_of_interest = "2026"  # YYYY
 bottom_n = 25  # Number of videos to output
 
@@ -144,7 +144,7 @@ videos = {
 
 # Get video details
 for video_id, video in tqdm(videos.items(), desc="Retrieving video details"):
-    title = video["css"].find_element(By.CLASS_NAME, "css-hp3yqo").text
+    title = video["css"].find_element(By.CLASS_NAME, "css-sbp25g").text
     url = video["css"].get_attribute("href")
     datestring = video["css"].find_element(By.CLASS_NAME, "css-13w4nb7").text
     datestring = clean_dumpert_datestring(datestring)
